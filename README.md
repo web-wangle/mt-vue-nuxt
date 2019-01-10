@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # mt-app
 
 > My great Nuxt.js project
@@ -20,3 +21,7 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+=======
+# mt-vue-nuxt
+a project to learn vue muxt
+>>>>>>> 432133300b7e755048c334caf973281a1fe2b365
