@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header style="height:40px">
+    <el-header style="height:auto">
       <my-header></my-header>
     </el-header>
     <el-main>
