@@ -6,7 +6,7 @@
         <i :class="item.type"></i>{{item.name}}<span class="arrow"></span>
       </dd>
     </dl>
-    <div class="detail" v-if="kind">
+    <div class="detail" v-if="kind" @mouseenter="sover" @mouseleave="sout">
       <div v-for="(item,index) in curdetail.child" :key="index">
         <h4>{{item.title}}</h4>
         <span v-for="(x,idx) in item.child" :key="idx">{{x}}</span>
@@ -53,13 +53,20 @@ export default {
   },
   methods: {
     mouseleave(){
-      setTimeout(() => {
-        this.kind = ''
+      let self = this;
+      self._timer = setTimeout(() => {
+        this.kind = '';
       },150)
     },
     mouseenter(e){
       this.kind = e.target.querySelector('i').className;
     },
+    sover(){
+      clearTimeout(this._timer);
+    },
+    sout(){
+      this.kind = '';
+    }
   }
 };
 </script>
