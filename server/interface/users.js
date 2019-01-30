@@ -21,8 +21,8 @@ router.post('./signup', async(ctx) => {    //注册接口路由
   } = ctx.request.body;    //ES6解构赋值
 
   if(code){
-    const saveCode = await Store.hget(`nodemail: ${username}`,'code');
-    const saveExpire = await Store.hget(`nodemail: ${username}`,'expire');
+    const saveCode = await Store.hget(`nodemail:${username}`,'code');
+    const saveExpire = await Store.hget(`nodemail:${username}`,'expire');
 
     if(code === saveCode){
       if(new Date().getTime() - saveExpire > 0){
@@ -113,7 +113,7 @@ router.post('/signin', async(ctx,next) => {    //登录接口
 
 router.post('/verify', async(ctx,next) => {
   let username = ctx.request.body.username;
-  const saveExpire = await Store.hget(`nodemail: ${username}`,'expire');
+  const saveExpire = await Store.hget(`nodemail:${username}`,'expire');
   if(saveExpire && new Date().getTime() - saveExpire < 0){
     ctx.body = {
       code: -1,
@@ -124,7 +124,7 @@ router.post('/verify', async(ctx,next) => {
   let transporter = nodeMailer.createTransport({    //smtp服务发送邮件
     host: Email.smtp.host,
     port: 587,
-    secure: fakse,
+    secure: false,
     auth: {
       user: Email.smtp.user,
       pass: Email.smtp.pass
@@ -147,6 +147,7 @@ router.post('/verify', async(ctx,next) => {
       return console.log(`验证邮件发送失败：${error}`);
     }else{
       Store.hmset(`nodemail:${ko.user}`,'code',ko.code,'expire',ko.expire,'email',ko.email);
+      Store.expire(`nodemail:${ko.user}`, 60);
     }
   })
   ctx.body = {
