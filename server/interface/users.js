@@ -12,7 +12,7 @@ let router = new Router({
 
 let Store = new Redis().client
 
-router.post('./signup', async(ctx) => {    //注册接口路由
+router.post('/signup', async(ctx) => {    //注册接口路由
   const {
     username,
     password,
@@ -48,6 +48,7 @@ router.post('./signup', async(ctx) => {    //注册接口路由
   let user = await User.find({
     username
   })
+  console.log(user);
   if(user.length){
     ctx.body = {
       code: -1,
@@ -158,7 +159,7 @@ router.post('/verify', async(ctx,next) => {
 
 router.get('/exit', async(ctx,next) => {    //退出接口
   await ctx.logout();
-  if(!ctx.isAuthtnticated()){
+  if(!ctx.isAuthenticated()){
     ctx.body = {
       code: 0
     }
@@ -170,7 +171,7 @@ router.get('/exit', async(ctx,next) => {    //退出接口
 })
 
 router.get('/getUser', async(ctx) => {    //获取用户信息
-  if(ctx.isAuthtnticated()){
+  if(ctx.isAuthenticated()){
     const {username, email} = ctx.session.passport.user;
     ctx.body = {
       user: username,
